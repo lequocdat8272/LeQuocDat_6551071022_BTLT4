@@ -1,0 +1,83 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Bai21
+{
+    public class frmSplash : Form
+    {
+        private Timer _timer;
+        private ProgressBar _progress;
+        private int _ticks;
+
+        public frmSplash()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Size = new Size(480, 220);
+            this.BackColor = Color.White;
+
+            var lblTitle = new Label
+            {
+                Text = "Module 5: MDI Form\nBài 21 - MDI, Splash và About",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Height = 120
+            };
+            this.Controls.Add(lblTitle);
+
+            var lblAuthor = new Label
+            {
+                Text = "Tác giả: [Họ Tên Sinh Viên]",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 30
+            };
+            this.Controls.Add(lblAuthor);
+
+            _progress = new ProgressBar
+            {
+                Style = ProgressBarStyle.Continuous,
+                Dock = DockStyle.Bottom,
+                Height = 28,
+                Minimum = 0,
+                Maximum = 20,
+                Value = 0
+            };
+            this.Controls.Add(_progress);
+
+            _timer = new Timer { Interval = 150 };
+            _timer.Tick += Timer_Tick;
+            this.Load += FrmSplash_Load;
+        }
+
+        private void FrmSplash_Load(object? sender, EventArgs e)
+        {
+            _ticks = 0;
+            _progress.Value = 0;
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            _ticks++;
+            if (_ticks <= _progress.Maximum)
+            {
+                _progress.Value = _ticks;
+            }
+            else
+            {
+                _timer.Stop();
+                this.Close();
+            }
+        }
+    }
+}
